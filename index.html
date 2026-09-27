@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastGo - Full Stack Food Delivery Application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff2b56;
+            --primary-dark: #e00034;
+            --accent: #ff8c00;
+            --bg-dark: #0f111a;
+            --card-bg: #181b29;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+            --veg-color: #22c55e;
+            --border-color: #2a2e45;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .badge {
+            background: rgba(255, 43, 86, 0.15);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 70px 0 50px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #ff8c00, #ff2b56);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto 30px;
+        }
+
+        .tech-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .tag {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag i {
+            color: var(--primary);
+        }
+
+        /* Features Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(255, 43, 86, 0.15);
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(255, 43, 86, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Notice Box */
+        .notice-box {
+            background: linear-gradient(135deg, rgba(255, 43, 86, 0.1), rgba(255, 140, 0, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .notice-box h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="navbar">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-utensils"></i> FastGo
+            </a>
+            <span class="badge"><i class="fa-solid fa-code"></i> Full Stack Java JEE Project</span>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <h1 class="hero-title">FastGo - Full Stack Food Delivery App</h1>
+            <p class="hero-subtitle">A feature-rich Zomato-style food ordering platform built using Java Servlets, JSP, JDBC, MySQL, HTML5, and Vanilla CSS3.</p>
+
+            <div class="tech-tags">
+                <span class="tag"><i class="fa-brands fa-java"></i> Java 17 / 25</span>
+                <span class="tag"><i class="fa-solid fa-server"></i> JEE Servlets & JSP</span>
+                <span class="tag"><i class="fa-solid fa-database"></i> JDBC & MySQL 8.0</span>
+                <span class="tag"><i class="fa-solid fa-credit-card"></i> Paytm / PhonePe Gateway</span>
+                <span class="tag"><i class="fa-solid fa-store"></i> 10 Restaurants & 100+ Dishes</span>
+            </div>
+        </section>
+
+        <!-- GitHub Pages Hosting Notice -->
+        <div class="notice-box">
+            <h3><i class="fa-solid fa-circle-info"></i> Project Architecture Note</h3>
+            <p style="color: var(--text-light); max-width: 800px; margin: 0 auto;">
+                FastGo is a <strong>Full-Stack Java Enterprise Web Application</strong> requiring a Java Servlet Container (Tomcat / Jetty) and a MySQL Database backend to run. GitHub Pages hosts static web pages.
+            </p>
+            <a href="https://github.com/Rohith697/FullStackProject" class="btn"><i class="fa-brands fa-github"></i> View Full Source Code on GitHub</a>
+        </div>
+
+        <!-- Key Features Grid -->
+        <section>
+            <h2 style="font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 30px;">Application Features</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-shop"></i></div>
+                    <h3>10+ Top Restaurants</h3>
+                    <p>Features 10 curated restaurants with Unsplash food imagery, ratings, price for two, delivery times, and cuisine filters.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
+                    <h3>100+ Mouthwatering Items</h3>
+                    <p>Each restaurant offers 10 specialized menu items complete with Veg/Non-Veg indicators, pricing, and descriptions.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3>Multi-Step Payment Gateway</h3>
+                    <p>Includes address review step followed by Paytm, PhonePe, Google Pay (GPay), Credit Card, and Cash on Delivery options.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <h3>Dynamic Shopping Cart</h3>
+                    <p>Real-time cart calculation with promo code discounts (<code>FASTGO50</code>), delivery fees, and taxes.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
+                    <h3>Admin Management Dashboard</h3>
+                    <p>Dedicated admin portal to view all customer orders, update order status, manage menu items, and view total sales revenue.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h3>Live Order Tracking</h3>
+                    <p>Order success tracking page with item breakdown, payment status, estimated delivery time, and customer address.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 FastGo Food Delivery Application. Developed by Rohith.</p>
+        </footer>
+    </div>
+</body>
+</html>

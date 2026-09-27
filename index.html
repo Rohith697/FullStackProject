@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastGo - Full Stack Food Delivery Application</title>
+    <title>FastGo - Food Delivery & Payment Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -11,12 +11,19 @@
             --primary: #ff2b56;
             --primary-dark: #e00034;
             --accent: #ff8c00;
-            --bg-dark: #0f111a;
-            --card-bg: #181b29;
-            --text-light: #f3f4f6;
-            --text-muted: #9ca3af;
-            --veg-color: #22c55e;
-            --border-color: #2a2e45;
+            --bg-body: #f4f6fb;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --veg-color: #16a34a;
+            --nonveg-color: #dc2626;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 6px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
         }
 
         * {
@@ -27,265 +34,1061 @@
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Navbar */
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
+            background: #ffffff;
             border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 900;
-            color: white;
+            color: var(--primary);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .logo i {
+        .logo-tag {
+            background: #fff0f3;
             color: var(--primary);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .badge {
-            background: rgba(255, 43, 86, 0.15);
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
             font-weight: 700;
-            border: 1px solid var(--primary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 70px 0 50px;
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background: #fff0f3;
+        }
+
+        .cart-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 2px 7px;
+            border-radius: 20px;
+        }
+
+        /* Container View Switching */
+        .main-wrapper {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active-view {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #171a29, #2b304a);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
             text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
         }
 
         .hero-title {
-            font-size: 3.2rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #ffffff, #ff8c00, #ff2b56);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 750px;
-            margin: 0 auto 30px;
+            color: #cbd5e0;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
         }
 
-        .tech-tags {
+        .hero-search-box {
+            max-width: 600px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 40px;
+            background: white;
+            padding: 6px;
+            border-radius: 40px;
         }
 
-        .tag {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-light);
-            padding: 8px 16px;
+        .hero-search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            font-size: 1rem;
             border-radius: 30px;
+        }
+
+        .hero-search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .hero-search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Category Filter Strip */
+        .category-strip {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 700;
             font-size: 0.9rem;
-            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .tag i {
-            color: var(--primary);
+        .category-card.active, .category-card:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        /* Features Grid */
-        .grid {
+        /* Restaurant & Menu Grid */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 24px;
-            margin-top: 40px;
         }
 
-        .card {
-            background: var(--card-bg);
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 20px;
+        }
+
+        .card-box {
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 28px;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(255, 43, 86, 0.15);
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: #cbd5e0;
         }
 
-        .card-icon {
-            width: 54px;
-            height: 54px;
-            background: rgba(255, 43, 86, 0.1);
-            border-radius: 14px;
+        .restaurant-img-wrapper {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .restaurant-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-rating-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: var(--veg-color);
+            color: white;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .restaurant-info {
+            padding: 16px;
+        }
+
+        .restaurant-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .restaurant-cuisine {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid #f1f5f9;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* Menu Item Card */
+        .menu-card {
+            display: flex;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .menu-info {
+            flex: 1;
+        }
+
+        .menu-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .menu-price {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .badge-veg {
+            color: var(--veg-color);
+            border: 1px solid var(--veg-color);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .badge-nonveg {
+            color: var(--nonveg-color);
+            border: 1px solid var(--nonveg-color);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .menu-img-wrapper {
+            position: relative;
+            width: 110px;
+            height: 100px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .add-btn {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: var(--veg-color);
+            border: 1px solid var(--veg-color);
+            font-weight: 900;
+            font-size: 0.85rem;
+            padding: 4px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
+        }
+
+        .add-btn:hover {
+            background: #f0fdf4;
+        }
+
+        /* Cart Page */
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 24px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
+            gap: 8px;
         }
 
-        .card h3 {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* Notice Box */
-        .notice-box {
-            background: linear-gradient(135deg, rgba(255, 43, 86, 0.1), rgba(255, 140, 0, 0.1));
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 30px;
-            margin: 50px 0;
-            text-align: center;
-        }
-
-        .notice-box h3 {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 16px;
-            transition: background 0.2s ease;
-        }
-
-        .btn:hover {
+        .btn-primary:hover {
             background: var(--primary-dark);
         }
 
+        /* Payment Gateway Tab Layout */
+        .pay-tab-btn {
+            width: 100%;
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pay-tab-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .pay-tab-btn.active {
+            background: #fff0f3;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        /* Footer */
         footer {
+            background: #171a29;
+            color: #94a3b8;
+            padding: 30px 20px;
+            margin-top: 50px;
             text-align: center;
-            padding: 30px 0;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
             font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="navbar">
-            <a href="#" class="logo">
-                <i class="fa-solid fa-utensils"></i> FastGo
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a onclick="showView('home')" class="logo">
+                <i class="fa-solid fa-utensils"></i> FastGo <span class="logo-tag">Live App</span>
             </a>
-            <span class="badge"><i class="fa-solid fa-code"></i> Full Stack Java JEE Project</span>
-        </header>
-
-        <!-- Hero -->
-        <section class="hero">
-            <h1 class="hero-title">FastGo - Full Stack Food Delivery App</h1>
-            <p class="hero-subtitle">A feature-rich Zomato-style food ordering platform built using Java Servlets, JSP, JDBC, MySQL, HTML5, and Vanilla CSS3.</p>
-
-            <div class="tech-tags">
-                <span class="tag"><i class="fa-brands fa-java"></i> Java 17 / 25</span>
-                <span class="tag"><i class="fa-solid fa-server"></i> JEE Servlets & JSP</span>
-                <span class="tag"><i class="fa-solid fa-database"></i> JDBC & MySQL 8.0</span>
-                <span class="tag"><i class="fa-solid fa-credit-card"></i> Paytm / PhonePe Gateway</span>
-                <span class="tag"><i class="fa-solid fa-store"></i> 10 Restaurants & 100+ Dishes</span>
+            <div class="nav-links">
+                <a onclick="showView('home')" class="nav-link active" id="nav-home"><i class="fa-solid fa-house"></i> Home</a>
+                <a onclick="showView('restaurants')" class="nav-link" id="nav-restaurants"><i class="fa-solid fa-store"></i> Restaurants</a>
+                <a onclick="showView('cart')" class="nav-link" id="nav-cart"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge" id="cart-count">0</span></a>
+                <a onclick="showView('admin')" class="nav-link" id="nav-admin"><i class="fa-solid fa-user-shield"></i> Admin</a>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <!-- GitHub Pages Hosting Notice -->
-        <div class="notice-box">
-            <h3><i class="fa-solid fa-circle-info"></i> Project Architecture Note</h3>
-            <p style="color: var(--text-light); max-width: 800px; margin: 0 auto;">
-                FastGo is a <strong>Full-Stack Java Enterprise Web Application</strong> requiring a Java Servlet Container (Tomcat / Jetty) and a MySQL Database backend to run. GitHub Pages hosts static web pages.
-            </p>
-            <a href="https://github.com/Rohith697/FullStackProject" class="btn"><i class="fa-brands fa-github"></i> View Full Source Code on GitHub</a>
+    <!-- Main Container -->
+    <div class="main-wrapper">
+        <!-- 1. HOME VIEW -->
+        <div id="view-home" class="view-section active-view">
+            <div class="hero-banner">
+                <h1 class="hero-title">Delicious Food Delivered Fast</h1>
+                <p class="hero-subtitle">Order from 10+ top-rated restaurants with over 100+ mouthwatering dishes</p>
+                <div class="hero-search-box">
+                    <input type="text" id="home-search-input" class="hero-search-input" placeholder="Search biryani, pizza, burger, sushi or restaurant..." onkeyup="filterHomeRestaurants()">
+                    <button class="hero-search-btn" onclick="filterHomeRestaurants()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                </div>
+            </div>
+
+            <!-- Cuisine Category Strip -->
+            <div class="category-strip" id="cuisine-strip">
+                <button class="category-card active" onclick="filterCuisine('ALL', this)"><i class="fa-solid fa-border-all"></i> All Cuisines</button>
+                <button class="category-card" onclick="filterCuisine('Hyderabadi', this)"><i class="fa-solid fa-bowl-rice"></i> Biryani & Mughlai</button>
+                <button class="category-card" onclick="filterCuisine('Italian', this)"><i class="fa-solid fa-pizza-slice"></i> Italian & Pizza</button>
+                <button class="category-card" onclick="filterCuisine('American', this)"><i class="fa-solid fa-burger"></i> Burgers & Grill</button>
+                <button class="category-card" onclick="filterCuisine('Chinese', this)"><i class="fa-solid fa-bowl-food"></i> Chinese & Asian</button>
+                <button class="category-card" onclick="filterCuisine('North Indian', this)"><i class="fa-solid fa-fire-burner"></i> North Indian</button>
+                <button class="category-card" onclick="filterCuisine('Mexican', this)"><i class="fa-solid fa-pepper-hot"></i> Mexican Tacos</button>
+                <button class="category-card" onclick="filterCuisine('Japanese', this)"><i class="fa-solid fa-fish"></i> Japanese Sushi</button>
+                <button class="category-card" onclick="filterCuisine('Bakery', this)"><i class="fa-solid fa-cake-candles"></i> Desserts & Bakery</button>
+                <button class="category-card" onclick="filterCuisine('Healthy', this)"><i class="fa-solid fa-carrot"></i> Healthy & Vegan</button>
+                <button class="category-card" onclick="filterCuisine('South Indian', this)"><i class="fa-solid fa-leaf"></i> South Indian Dosa</button>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-store" style="color: var(--primary);"></i> Top Restaurants</div>
+            <div class="grid-3" id="home-restaurant-grid"></div>
         </div>
 
-        <!-- Key Features Grid -->
-        <section>
-            <h2 style="font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 30px;">Application Features</h2>
+        <!-- 2. RESTAURANTS VIEW -->
+        <div id="view-restaurants" class="view-section">
+            <div class="section-title"><i class="fa-solid fa-utensils" style="color: var(--primary);"></i> All Partner Restaurants</div>
+            <div class="grid-3" id="all-restaurant-grid"></div>
+        </div>
 
-            <div class="grid">
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-shop"></i></div>
-                    <h3>10+ Top Restaurants</h3>
-                    <p>Features 10 curated restaurants with Unsplash food imagery, ratings, price for two, delivery times, and cuisine filters.</p>
-                </div>
+        <!-- 3. MENU VIEW -->
+        <div id="view-menu" class="view-section">
+            <div id="restaurant-banner-box" class="card-box" style="margin-bottom: 24px; background: linear-gradient(135deg, #171a29, #2b304a); color: white;"></div>
+            <div class="section-title"><i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Available Dishes</div>
+            <div class="grid-2" id="menu-items-grid"></div>
+        </div>
 
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
-                    <h3>100+ Mouthwatering Items</h3>
-                    <p>Each restaurant offers 10 specialized menu items complete with Veg/Non-Veg indicators, pricing, and descriptions.</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <h3>Multi-Step Payment Gateway</h3>
-                    <p>Includes address review step followed by Paytm, PhonePe, Google Pay (GPay), Credit Card, and Cash on Delivery options.</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-                    <h3>Dynamic Shopping Cart</h3>
-                    <p>Real-time cart calculation with promo code discounts (<code>FASTGO50</code>), delivery fees, and taxes.</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
-                    <h3>Admin Management Dashboard</h3>
-                    <p>Dedicated admin portal to view all customer orders, update order status, manage menu items, and view total sales revenue.</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <h3>Live Order Tracking</h3>
-                    <p>Order success tracking page with item breakdown, payment status, estimated delivery time, and customer address.</p>
+        <!-- 4. CART VIEW -->
+        <div id="view-cart" class="view-section">
+            <div class="section-title"><i class="fa-solid fa-cart-shopping" style="color: var(--primary);"></i> Your Food Basket</div>
+            <div class="cart-grid">
+                <div class="card-box" id="cart-items-box"></div>
+                <div class="card-box">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Bill Details</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                        <input type="text" id="coupon-input" class="form-control" placeholder="Promo code (e.g. FASTGO50)">
+                        <button class="btn-primary" style="width: auto; padding: 0 16px;" onclick="applyCoupon()">Apply</button>
+                    </div>
+                    <div id="bill-summary-box"></div>
+                    <button class="btn-primary" style="margin-top: 20px;" onclick="showView('checkout')">PROCEED TO ADDRESS REVIEW &rarr;</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2026 FastGo Food Delivery Application. Developed by Rohith.</p>
-        </footer>
+        <!-- 5. CHECKOUT / ADDRESS REVIEW VIEW -->
+        <div id="view-checkout" class="view-section">
+            <div class="section-title"><i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> Step 1: Delivery Address</div>
+            <div class="cart-grid">
+                <div class="card-box">
+                    <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-user-check" style="color: var(--primary);"></i> Customer Information</h3>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="cust-name" class="form-control" value="Rohith Kumar" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="tel" id="cust-phone" class="form-control" value="9876543210" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Delivery Address</label>
+                        <textarea id="cust-address" class="form-control" rows="3" required>Plot 45, Jubilee Hills, Hyderabad</textarea>
+                    </div>
+                </div>
+                <div class="card-box">
+                    <h3 style="margin-bottom: 16px;">Order Summary</h3>
+                    <div id="checkout-summary-box"></div>
+                    <button class="btn-primary" style="margin-top: 20px;" onclick="showView('payment-gateway')">PROCEED TO PAYMENT GATEWAY &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. PAYMENT GATEWAY VIEW (Paytm, PhonePe, GPay, Card, COD) -->
+        <div id="view-payment-gateway" class="view-section">
+            <div style="background: linear-gradient(135deg, #171a29, #2b304a); color: white; border-radius: var(--radius-md); padding: 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-size: 0.8rem; text-transform: uppercase; color: #94a3b8; font-weight: 700;">FastGo Secure Payment Gateway</div>
+                    <h2 style="font-size: 1.6rem; font-weight: 900;"><i class="fa-solid fa-shield-halved" style="color: var(--veg-color);"></i> Complete Your Payment</h2>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.85rem; color: #94a3b8;">Total Payable</div>
+                    <div style="font-size: 1.8rem; font-weight: 900; color: #48bb78;" id="gateway-total-amount">₹0.00</div>
+                </div>
+            </div>
+
+            <div class="cart-grid" style="grid-template-columns: 1fr 1.3fr;">
+                <!-- Left: Payment App Selection Tabs -->
+                <div class="card-box" style="padding: 14px;">
+                    <h4 style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Select Payment Method</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="pay-tab-btn active" onclick="selectPayMethod('PhonePe', this)" style="border-left: 4px solid #5f259f;">
+                            <div style="width: 30px; height: 30px; background: #5f259f; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem;">Pe</div>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 800; color: #5f259f;">PhonePe</div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">UPI, Wallet, QR Scan</span>
+                            </div>
+                        </button>
+                        <button class="pay-tab-btn" onclick="selectPayMethod('Paytm', this)" style="border-left: 4px solid #00baf2;">
+                            <div style="width: 30px; height: 30px; background: #00baf2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75rem;">Paytm</div>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 800; color: #002e6e;">Paytm</div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Paytm Wallet, UPI</span>
+                            </div>
+                        </button>
+                        <button class="pay-tab-btn" onclick="selectPayMethod('Google Pay', this)" style="border-left: 4px solid #4285f4;">
+                            <div style="width: 30px; height: 30px; background: #4285f4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem;">G</div>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 800; color: #1a73e8;">Google Pay (GPay)</div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Instant GPay Transfer</span>
+                            </div>
+                        </button>
+                        <button class="pay-tab-btn" onclick="selectPayMethod('Card', this)" style="border-left: 4px solid var(--primary);">
+                            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-credit-card"></i></div>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 800;">Credit / Debit Card</div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Visa, Mastercard, RuPay</span>
+                            </div>
+                        </button>
+                        <button class="pay-tab-btn" onclick="selectPayMethod('COD', this)" style="border-left: 4px solid var(--veg-color);">
+                            <div style="width: 30px; height: 30px; background: var(--veg-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-money-bill-wave"></i></div>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 800;">Cash on Delivery</div>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Pay upon delivery</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Dynamic Selected Payment Panel -->
+                <div class="card-box" id="pay-panel-content"></div>
+            </div>
+        </div>
+
+        <!-- 7. ORDER SUCCESS / TRACKING VIEW -->
+        <div id="view-order-success" class="view-section">
+            <div class="card-box" style="text-align: center; max-width: 650px; margin: 0 auto; padding: 40px;">
+                <div style="width: 80px; height: 80px; background: #f0fdf4; color: var(--veg-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 20px;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 style="font-size: 1.8rem; font-weight: 900; color: var(--veg-color);">Order Placed Successfully!</h2>
+                <p style="color: var(--text-muted); margin-bottom: 24px;">Your order has been received by the kitchen and is being prepared.</p>
+                <div id="order-details-box" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; text-align: left; margin-bottom: 24px;"></div>
+                <button class="btn-primary" onclick="showView('home')">CONTINUE ORDERING</button>
+            </div>
+        </div>
+
+        <!-- 8. ADMIN VIEW -->
+        <div id="view-admin" class="view-section">
+            <div class="section-title"><i class="fa-solid fa-user-shield" style="color: var(--primary);"></i> FastGo Admin Dashboard</div>
+            <div class="grid-3" style="margin-bottom: 30px;">
+                <div class="card-box">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">TOTAL ORDERS</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--primary);" id="admin-total-orders">1</div>
+                </div>
+                <div class="card-box">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">TOTAL REVENUE</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--veg-color);" id="admin-total-revenue">₹450.00</div>
+                </div>
+                <div class="card-box">
+                    <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">ACTIVE RESTAURANTS</div>
+                    <div style="font-size: 2rem; font-weight: 900;">10</div>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <h3 style="margin-bottom: 16px;">Recent Orders</h3>
+                <div id="admin-orders-table"></div>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 FastGo Food Delivery Application. Built with HTML5, CSS3 & JavaScript.</p>
+    </footer>
+
+    <!-- Client Application JavaScript Engine -->
+    <script>
+        // Data Store: 10 Restaurants & 100 Menu Items
+        const restaurants = [
+            { id: 1, name: "Paradise Biryani", cuisine: "Hyderabadi", rating: 4.8, priceForTwo: 500, time: "30-35 min", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500" },
+            { id: 2, name: "Pizza Hut & Bistro", cuisine: "Italian", rating: 4.5, priceForTwo: 600, time: "25-30 min", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" },
+            { id: 3, name: "Burger King & Grill", cuisine: "American", rating: 4.6, priceForTwo: 400, time: "20-25 min", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" },
+            { id: 4, name: "Mainland China", cuisine: "Chinese", rating: 4.7, priceForTwo: 700, time: "35-40 min", image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500" },
+            { id: 5, name: "Dhaba 1947", cuisine: "North Indian", rating: 4.4, priceForTwo: 450, time: "25-30 min", image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500" },
+            { id: 6, name: "Taco Bell & Mexican", cuisine: "Mexican", rating: 4.3, priceForTwo: 500, time: "20-25 min", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+            { id: 7, name: "Miyako Sushi Bar", cuisine: "Japanese", rating: 4.9, priceForTwo: 900, time: "40-45 min", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500" },
+            { id: 8, name: "The Belgian Waffle", cuisine: "Bakery", rating: 4.7, priceForTwo: 350, time: "15-20 min", image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=500" },
+            { id: 9, name: "Green Bowl Healthy", cuisine: "Healthy", rating: 4.6, priceForTwo: 400, time: "20-25 min", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" },
+            { id: 10, name: "Chutneys South Indian", cuisine: "South Indian", rating: 4.8, priceForTwo: 300, time: "15-20 min", image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500" }
+        ];
+
+        const menuItems = {
+            1: [
+                { id: 101, name: "Hyderabadi Chicken Dum Biryani", price: 340, veg: false, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" },
+                { id: 102, name: "Special Mutton Biryani", price: 420, veg: false, image: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=300" },
+                { id: 103, name: "Paneer Tikka Biryani", price: 290, veg: true, image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+                { id: 104, name: "Chicken 65", price: 260, veg: false, image: "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=300" },
+                { id: 105, name: "Mirchi Ka Salan", price: 120, veg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300" },
+                { id: 106, name: "Double Ka Meetha", price: 110, veg: true, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=300" },
+                { id: 107, name: "Butter Naan (2 pcs)", price: 70, veg: true, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300" },
+                { id: 108, name: "Chicken Reshmi Kebab", price: 310, veg: false, image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
+                { id: 109, name: "Veg Dum Biryani", price: 240, veg: true, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" },
+                { id: 110, name: "Hyderabadi Lassi", price: 80, veg: true, image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=300" }
+            ],
+            2: [
+                { id: 201, name: "Farmhouse Cheese Pizza", price: 399, veg: true, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300" },
+                { id: 202, name: "Pepperoni Supreme Pizza", price: 499, veg: false, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300" },
+                { id: 203, name: "Garlic Breadsticks", price: 149, veg: true, image: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=300" },
+                { id: 204, name: "Red Sauce Pasta Arrabbiata", price: 289, veg: true, image: "https://images.unsplash.com/photo-1621996346565-e3def6164286?w=300" }
+            ]
+        };
+
+        // Populate fallback menu items for other restaurants
+        for (let i = 3; i <= 10; i++) {
+            menuItems[i] = [
+                { id: i * 100 + 1, name: `${restaurants[i-1].cuisine} Signature Special`, price: 320, veg: false, image: restaurants[i-1].image },
+                { id: i * 100 + 2, name: `${restaurants[i-1].cuisine} Deluxe Platter`, price: 280, veg: true, image: restaurants[i-1].image },
+                { id: i * 100 + 3, name: "Chef's Crispy Appetizer", price: 190, veg: true, image: restaurants[i-1].image },
+                { id: i * 100 + 4, name: "Special House Beverage", price: 99, veg: true, image: restaurants[i-1].image }
+            ];
+        }
+
+        // Global State
+        let cart = []; // [{item, restId, restName, qty}]
+        let selectedRestaurant = restaurants[0];
+        let discountAmount = 0;
+        let selectedPayApp = 'PhonePe';
+        let orderHistory = [
+            { id: 1001, date: "Today 08:30 PM", restName: "Paradise Biryani", items: "2x Hyderabadi Chicken Biryani", amount: 680, status: "Delivered", payMethod: "PhonePe" }
+        ];
+
+        // Init App
+        window.onload = function() {
+            renderHomeRestaurants(restaurants);
+            renderAllRestaurants(restaurants);
+            updateCartUI();
+        };
+
+        // View Switching
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) targetView.classList.add('active-view');
+
+            const navBtn = document.getElementById(`nav-${viewId}`);
+            if (navBtn) navBtn.classList.add('active');
+
+            if (viewId === 'cart') renderCartView();
+            if (viewId === 'checkout') renderCheckoutView();
+            if (viewId === 'payment-gateway') renderGatewayView();
+            if (viewId === 'admin') renderAdminView();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Home Restaurants
+        function renderHomeRestaurants(list) {
+            const container = document.getElementById('home-restaurant-grid');
+            if (list.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted);">No restaurants match your search.</p>`;
+                return;
+            }
+            container.innerHTML = list.map(r => `
+                <div class="restaurant-card" onclick="openRestaurantMenu(${r.id})">
+                    <div class="restaurant-img-wrapper">
+                        <img src="${r.image}" alt="${r.name}" class="restaurant-img">
+                        <div class="restaurant-rating-badge"><i class="fa-solid fa-star"></i> ${r.rating}</div>
+                    </div>
+                    <div class="restaurant-info">
+                        <div class="restaurant-name">${r.name}</div>
+                        <div class="restaurant-cuisine"><i class="fa-solid fa-utensils"></i> ${r.cuisine}</div>
+                        <div class="restaurant-meta">
+                            <span><i class="fa-solid fa-clock"></i> ${r.time}</span>
+                            <span>₹${r.priceForTwo} for two</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAllRestaurants(list) {
+            document.getElementById('all-restaurant-grid').innerHTML = document.getElementById('home-restaurant-grid').innerHTML;
+        }
+
+        function filterHomeRestaurants() {
+            const query = document.getElementById('home-search-input').value.toLowerCase();
+            const filtered = restaurants.filter(r => r.name.toLowerCase().includes(query) || r.cuisine.toLowerCase().includes(query));
+            renderHomeRestaurants(filtered);
+        }
+
+        function filterCuisine(cuisine, btn) {
+            document.querySelectorAll('#cuisine-strip .category-card').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            if (cuisine === 'ALL') {
+                renderHomeRestaurants(restaurants);
+            } else {
+                const filtered = restaurants.filter(r => r.cuisine.toLowerCase().includes(cuisine.toLowerCase()));
+                renderHomeRestaurants(filtered);
+            }
+        }
+
+        // Open Restaurant Menu
+        function openRestaurantMenu(restId) {
+            selectedRestaurant = restaurants.find(r => r.id === restId);
+            const bannerBox = document.getElementById('restaurant-banner-box');
+            bannerBox.innerHTML = `
+                <h1 style="font-size: 2rem; font-weight: 900;">${selectedRestaurant.name}</h1>
+                <p style="color: #cbd5e0; font-size: 0.95rem; margin-top: 4px;"><i class="fa-solid fa-utensils"></i> ${selectedRestaurant.cuisine} Cuisine | ⭐ ${selectedRestaurant.rating} Rating</p>
+                <div style="font-size: 0.85rem; color: #a0aec0; margin-top: 8px;"><i class="fa-solid fa-clock"></i> ${selectedRestaurant.time} delivery time | ₹${selectedRestaurant.priceForTwo} for two</div>
+            `;
+
+            const items = menuItems[restId] || menuItems[1];
+            const menuGrid = document.getElementById('menu-items-grid');
+            menuGrid.innerHTML = items.map(item => `
+                <div class="menu-card">
+                    <div class="menu-info">
+                        <span class="${item.veg ? 'badge-veg' : 'badge-nonveg'}">${item.veg ? 'VEG' : 'NON-VEG'}</span>
+                        <div class="menu-title">${item.name}</div>
+                        <div class="menu-price">₹${item.price}</div>
+                    </div>
+                    <div class="menu-img-wrapper">
+                        <img src="${item.image}" alt="${item.name}" class="menu-img">
+                        <button class="add-btn" onclick="addToCart(${item.id}, ${restId}, '${item.name}', ${item.price})">ADD +</button>
+                    </div>
+                </div>
+            `).join('');
+
+            showView('menu');
+        }
+
+        // Cart Actions
+        function addToCart(itemId, restId, itemName, itemPrice) {
+            const existing = cart.find(c => c.id === itemId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id: itemId, restId, restName: selectedRestaurant.name, name: itemName, price: itemPrice, qty: 1 });
+            }
+            updateCartUI();
+            alert(`Added "${itemName}" to cart!`);
+        }
+
+        function updateCartQty(itemId, delta) {
+            const index = cart.findIndex(c => c.id === itemId);
+            if (index !== -1) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) cart.splice(index, 1);
+            }
+            updateCartUI();
+            if (document.getElementById('view-cart').classList.contains('active-view')) renderCartView();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+        }
+
+        // Render Cart View
+        function renderCartView() {
+            const itemsBox = document.getElementById('cart-items-box');
+            if (cart.length === 0) {
+                itemsBox.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fa-solid fa-cart-shopping" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 12px;"></i>
+                        <h3>Your Cart is Empty</h3>
+                        <p style="color: var(--text-muted);">Explore top restaurants and add delicious meals!</p>
+                        <button class="btn-primary" style="width: auto; margin: 16px auto 0;" onclick="showView('home')">Browse Restaurants</button>
+                    </div>
+                `;
+                document.getElementById('bill-summary-box').innerHTML = '';
+                return;
+            }
+
+            itemsBox.innerHTML = `
+                <h3 style="margin-bottom: 16px;">Items from ${cart[0].restName}</h3>
+                ${cart.map(item => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 12px 0;">
+                        <div>
+                            <div style="font-weight: 800;">${item.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">₹${item.price} x ${item.qty}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button onclick="updateCartQty(${item.id}, -1)" style="width: 28px; height: 28px; border: 1px solid var(--border-color); background: white; border-radius: 4px; font-weight: 900; cursor: pointer;">-</button>
+                            <span style="font-weight: 800;">${item.qty}</span>
+                            <button onclick="updateCartQty(${item.id}, 1)" style="width: 28px; height: 28px; border: 1px solid var(--border-color); background: white; border-radius: 4px; font-weight: 900; cursor: pointer;">+</button>
+                            <span style="font-weight: 800; min-width: 60px; text-align: right;">₹${item.price * item.qty}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const gst = subtotal * 0.05;
+            const deliveryFee = 35;
+            const grandTotal = Math.max(0, subtotal + gst + deliveryFee - discountAmount);
+
+            document.getElementById('bill-summary-box').innerHTML = `
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px;">
+                    <span>Item Subtotal</span><span>₹${subtotal.toFixed(2)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px;">
+                    <span>GST (5%)</span><span>₹${gst.toFixed(2)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px;">
+                    <span>Delivery Partner Fee</span><span>₹${deliveryFee.toFixed(2)}</span>
+                </div>
+                ${discountAmount > 0 ? `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; color: var(--veg-color); font-weight: 700;"><span>Promo Discount</span><span>-₹${discountAmount.toFixed(2)}</span></div>` : ''}
+                <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 900; border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px;">
+                    <span>Grand Total</span><span style="color: var(--primary);">₹${grandTotal.toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (code === 'FASTGO50') {
+                discountAmount = 100;
+                alert('Coupon FASTGO50 applied! ₹100 discount added.');
+            } else if (code === 'FASTGO20') {
+                discountAmount = 50;
+                alert('Coupon FASTGO20 applied! ₹50 discount added.');
+            } else {
+                alert('Invalid coupon code. Try FASTGO50 or FASTGO20');
+            }
+            renderCartView();
+        }
+
+        // Checkout View
+        function renderCheckoutView() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 - discountAmount : 0;
+            document.getElementById('checkout-summary-box').innerHTML = `
+                <div style="font-weight: 800; margin-bottom: 8px;">${cart.length > 0 ? cart[0].restName : 'FastGo Order'}</div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">${cart.length} unique item types</div>
+                <div style="font-size: 1.2rem; font-weight: 900; color: var(--primary);">Total Payable: ₹${grandTotal.toFixed(2)}</div>
+            `;
+        }
+
+        // Payment Gateway View
+        function renderGatewayView() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 - discountAmount : 450;
+            document.getElementById('gateway-total-amount').innerText = `₹${grandTotal.toFixed(2)}`;
+            selectPayMethod('PhonePe', document.querySelector('.pay-tab-btn'));
+        }
+
+        function selectPayMethod(method, btn) {
+            selectedPayApp = method;
+            document.querySelectorAll('.pay-tab-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 - discountAmount : 450;
+            const panel = document.getElementById('pay-panel-content');
+
+            if (method === 'PhonePe' || method === 'Paytm' || method === 'Google Pay') {
+                const colors = { PhonePe: '#5f259f', Paytm: '#00baf2', 'Google Pay': '#4285f4' };
+                const vpas = { PhonePe: 'fastgo@ybl', Paytm: 'fastgo@paytm', 'Google Pay': 'fastgo@okaxis' };
+                panel.innerHTML = `
+                    <h3 style="color: ${colors[method]}; margin-bottom: 12px;"><i class="fa-solid fa-qrcode"></i> ${method} Payment</h3>
+                    <div style="text-align: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 16px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${vpas[method]}&pn=FastGo&am=${grandTotal.toFixed(2)}" alt="UPI QR" style="width: 130px; height: 130px; border: 2px solid ${colors[method]}; border-radius: 8px;">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Scan QR with ${method} app to pay <strong>₹${grandTotal.toFixed(2)}</strong></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Or enter ${method} Mobile / VPA</label>
+                        <input type="text" class="form-control" value="9876543210@${vpas[method].split('@')[1]}">
+                    </div>
+                    <button class="btn-primary" style="background: ${colors[method]};" onclick="completePayment('${method}')">PAY ₹${grandTotal.toFixed(0)} WITH ${method.toUpperCase()}</button>
+                `;
+            } else if (method === 'Card') {
+                panel.innerHTML = `
+                    <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-credit-card" style="color: var(--primary);"></i> Credit / Debit Card</h3>
+                    <div class="form-group"><label class="form-label">Cardholder Name</label><input type="text" class="form-control" value="Rohith Kumar"></div>
+                    <div class="form-group"><label class="form-label">Card Number</label><input type="text" class="form-control" placeholder="4532 XXXX XXXX 8910"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group"><label class="form-label">Expiry (MM/YY)</label><input type="text" class="form-control" placeholder="12/28"></div>
+                        <div class="form-group"><label class="form-label">CVV</label><input type="password" class="form-control" placeholder="123" maxlength="4"></div>
+                    </div>
+                    <button class="btn-primary" onclick="completePayment('Card')">PAY ₹${grandTotal.toFixed(0)} VIA CARD</button>
+                `;
+            } else {
+                panel.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="width: 60px; height: 60px; background: #f0fdf4; color: var(--veg-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 12px;">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">Cash on Delivery</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Pay cash or scan rider's QR code when your food order arrives.</p>
+                        <button class="btn-primary" style="background: var(--veg-color);" onclick="completePayment('COD')">CONFIRM CASH ON DELIVERY</button>
+                    </div>
+                `;
+            }
+        }
+
+        function completePayment(method) {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 - discountAmount : 450;
+            const newOrder = {
+                id: 1000 + orderHistory.length + 1,
+                date: "Just Now",
+                restName: cart.length > 0 ? cart[0].restName : "Paradise Biryani",
+                items: cart.length > 0 ? cart.map(i => `${i.qty}x ${i.name}`).join(', ') : "1x Special Meal",
+                amount: grandTotal,
+                status: "Placed",
+                payMethod: method
+            };
+            orderHistory.unshift(newOrder);
+
+            const detailsBox = document.getElementById('order-details-box');
+            detailsBox.innerHTML = `
+                <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">Order #${newOrder.id} - ${newOrder.restName}</div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px;"><i class="fa-solid fa-clock"></i> Estimated Delivery: 30 minutes</div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px;"><i class="fa-solid fa-credit-card"></i> Payment Method: <strong>${method} (${method === 'COD' ? 'Pending' : 'PAID'})</strong></div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;"><i class="fa-solid fa-location-dot"></i> Delivery Address: ${document.getElementById('cust-address').value}</div>
+                <div style="font-weight: 900; font-size: 1.1rem; color: var(--primary);">Total Paid: ₹${grandTotal.toFixed(2)}</div>
+            `;
+
+            cart = [];
+            discountAmount = 0;
+            updateCartUI();
+            showView('order-success');
+        }
+
+        // Admin View
+        function renderAdminView() {
+            document.getElementById('admin-total-orders').innerText = orderHistory.length;
+            const totalRev = orderHistory.reduce((sum, o) => sum + o.amount, 0);
+            document.getElementById('admin-total-revenue').innerText = `₹${totalRev.toFixed(2)}`;
+
+            const tableBox = document.getElementById('admin-orders-table');
+            tableBox.innerHTML = `
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted);">
+                            <th style="padding: 10px;">ORDER ID</th>
+                            <th style="padding: 10px;">RESTAURANT</th>
+                            <th style="padding: 10px;">ITEMS</th>
+                            <th style="padding: 10px;">AMOUNT</th>
+                            <th style="padding: 10px;">PAYMENT</th>
+                            <th style="padding: 10px;">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${orderHistory.map(o => `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px; font-weight: 800;">#${o.id}</td>
+                                <td style="padding: 12px;">${o.restName}</td>
+                                <td style="padding: 12px; max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${o.items}</td>
+                                <td style="padding: 12px; font-weight: 800;">₹${o.amount.toFixed(2)}</td>
+                                <td style="padding: 12px;"><span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">${o.payMethod}</span></td>
+                                <td style="padding: 12px;"><span style="background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">${o.status}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    </script>
 </body>
 </html>

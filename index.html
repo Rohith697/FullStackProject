@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FastGo - Mobile Zomato Food Delivery & Payment Gateway</title>
+    <title>zomato - Food Delivery & Payment Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Okra:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #e23744; /* Zomato Red */
-            --primary-dark: #cb202d;
-            --accent: #256fef;
-            --bg-body: #f8f8f8;
-            --bg-card: #ffffff;
-            --text-dark: #1c1c1c;
-            --text-muted: #696969;
-            --border-color: #e8e8e8;
-            --veg-color: #24963f;
-            --nonveg-color: #e23744;
-            --rating-green: #24963f;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 18px;
-            --shadow-sm: 0 2px 10px rgba(0,0,0,0.06);
-            --shadow-md: 0 6px 20px rgba(0,0,0,0.1);
+            --zomato-red: #e23744;
+            --zomato-red-dark: #cb202d;
+            --zomato-dark: #1c1c1c;
+            --zomato-gray: #696969;
+            --zomato-light-gray: #9c9c9c;
+            --zomato-bg: #f8f8f8;
+            --zomato-border: #e8e8e8;
+            --zomato-green: #24963f;
+            --zomato-blue: #256fef;
+            --radius-card: 15px;
+            --radius-btn: 8px;
+            --shadow-card: 0 4px 14px rgba(0,0,0,0.06);
         }
 
         * {
@@ -35,179 +31,170 @@
         }
 
         body {
-            background-color: var(--bg-body);
-            color: var(--text-dark);
+            background-color: var(--zomato-bg);
+            color: var(--zomato-dark);
             line-height: 1.4;
             min-height: 100vh;
-            padding-bottom: 75px; /* Space for mobile bottom nav */
+            padding-bottom: 75px;
         }
 
-        /* Top Mobile Header / Search Bar */
-        .top-header {
+        /* Authentic Zomato Header */
+        .zomato-header {
             background: #ffffff;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: var(--shadow-sm);
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--zomato-border);
         }
 
-        .location-row {
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            gap: 16px;
         }
 
-        .location-info {
+        .zomato-brand {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--zomato-red);
+            text-decoration: none;
+            letter-spacing: -1.5px;
+            cursor: pointer;
+        }
+
+        .search-bar-container {
+            flex: 1;
+            max-width: 650px;
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid var(--zomato-border);
+            border-radius: 10px;
+            padding: 8px 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .location-select {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--text-dark);
+            color: var(--zomato-red);
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding-right: 12px;
+            border-right: 1px solid var(--zomato-border);
+            white-space: nowrap;
+            cursor: pointer;
         }
 
-        .location-info i {
-            color: var(--primary);
-            font-size: 1.2rem;
+        .search-input-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
         }
 
-        .search-box-wrapper {
-            position: relative;
+        .search-input-box i {
+            color: var(--zomato-gray);
+            font-size: 1.1rem;
+            margin-right: 8px;
         }
 
-        .search-input {
+        .search-input-box input {
             width: 100%;
-            padding: 12px 16px 12px 42px;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            border: none;
             outline: none;
-            background: #f4f4f5;
+            font-size: 0.95rem;
+            color: var(--zomato-dark);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .action-link {
+            text-decoration: none;
+            color: var(--zomato-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-link:hover {
+            color: var(--zomato-red);
+        }
+
+        /* Zomato Nav Tabs Strip (Delivery / Dining) */
+        .zomato-tabs-strip {
+            background: #ffffff;
+            border-bottom: 1px solid var(--zomato-border);
+            padding: 0 16px;
+        }
+
+        .tabs-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--zomato-gray);
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .search-input:focus {
-            background: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(226, 55, 68, 0.1);
+        .tab-btn.active {
+            color: var(--zomato-red);
+            border-bottom-color: var(--zomato-red);
         }
 
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-
-        /* Mobile Bottom Nav Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 8px 0;
-            border-top: 1px solid var(--border-color);
-            z-index: 2000;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-decoration: none;
-            cursor: pointer;
-            position: relative;
-            flex: 1;
-            padding: 4px 0;
-        }
-
-        .nav-item i {
-            font-size: 1.3rem;
-            margin-bottom: 3px;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-cart-badge {
-            position: absolute;
-            top: 0;
-            right: 25%;
-            background: var(--primary);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 900;
-            width: 18px;
-            height: 18px;
+        .tab-icon-circle {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: #f8f8f8;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
         }
 
-        /* Floating Zomato Cart Bar */
-        .floating-cart-bar {
-            position: fixed;
-            bottom: 65px;
-            left: 16px;
-            right: 16px;
-            background: var(--veg-color);
-            color: white;
-            border-radius: 12px;
-            padding: 12px 18px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1900;
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
-            animation: slideUp 0.3s ease;
+        .tab-btn.active .tab-icon-circle {
+            background: #fceec0;
+            color: var(--zomato-red);
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .floating-cart-info {
-            font-weight: 800;
-            font-size: 0.95rem;
-        }
-
-        .floating-cart-btn {
-            font-weight: 800;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Views */
-        .container {
+        /* Zomato Container Views */
+        .main-container {
             max-width: 1100px;
-            margin: 0 auto;
-            padding: 16px;
+            margin: 20px auto;
+            padding: 0 16px;
         }
 
-        .view-page {
+        .page-view {
             display: none;
         }
 
-        .view-page.active-page {
+        .page-view.active {
             display: block;
             animation: fadeIn 0.2s ease;
         }
@@ -217,156 +204,174 @@
             to { opacity: 1; }
         }
 
-        /* Zomato Round Category Avatars */
-        .category-avatar-row {
+        /* Zomato Inspiration Category Circles */
+        .inspiration-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--zomato-dark);
+            margin-bottom: 16px;
+        }
+
+        .category-scroll-row {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             overflow-x: auto;
-            padding: 8px 0 16px;
+            padding-bottom: 20px;
             scrollbar-width: none;
         }
 
-        .category-avatar-row::-webkit-scrollbar {
+        .category-scroll-row::-webkit-scrollbar {
             display: none;
         }
 
-        .category-item {
+        .category-card-circle {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 72px;
+            min-width: 110px;
             cursor: pointer;
         }
 
-        .category-circle {
-            width: 64px;
-            height: 64px;
+        .circle-img-wrapper {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid transparent;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.2s;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease;
         }
 
-        .category-item.active .category-circle, .category-item:hover .category-circle {
-            border-color: var(--primary);
+        .category-card-circle:hover .circle-img-wrapper {
             transform: scale(1.05);
         }
 
-        .category-circle img {
+        .circle-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .category-label {
-            font-size: 0.8rem;
+        .category-name-text {
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-top: 6px;
-            color: var(--text-dark);
+            color: var(--zomato-dark);
+            margin-top: 10px;
             text-align: center;
         }
 
-        /* Restaurant Cards */
-        .restaurant-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Authentic Zomato Restaurant Card Grid */
+        .res-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 16px;
         }
 
-        .res-card {
-            background: white;
-            border-radius: var(--radius-md);
+        .zomato-res-card {
+            background: #ffffff;
+            border-radius: var(--radius-card);
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
+            border: 1px solid transparent;
+            padding: 10px;
             cursor: pointer;
+            transition: all 0.25s ease;
         }
 
-        .res-img-box {
+        .zomato-res-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: var(--zomato-border);
+        }
+
+        .card-img-container {
             position: relative;
-            height: 190px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
-        .res-img-box img {
+        .card-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .res-promo-tag {
+        .badge-discount {
             position: absolute;
             bottom: 12px;
-            left: 12px;
-            background: #256fef;
-            color: white;
+            left: 0;
+            background: var(--zomato-blue);
+            color: #ffffff;
             font-size: 0.75rem;
-            font-weight: 900;
+            font-weight: 800;
             padding: 4px 10px;
-            border-radius: 6px;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
             text-transform: uppercase;
         }
 
-        .res-rating-tag {
+        .badge-time {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            background: var(--rating-green);
-            color: white;
+            background: rgba(255,255,255,0.9);
+            color: var(--zomato-dark);
+            font-size: 0.75rem;
             font-weight: 800;
-            font-size: 0.85rem;
             padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .res-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .res-title-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--zomato-dark);
+        }
+
+        .rating-green-pill {
+            background: var(--zomato-green);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 3px 7px;
             border-radius: 6px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
-        .res-details {
-            padding: 14px;
-        }
-
-        .res-name {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-
-        .res-cuisine {
+        .res-subtitle-row {
+            display: flex;
+            justify-content: space-between;
             font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 2px;
+            color: var(--zomato-gray);
+            margin-top: 4px;
         }
 
-        .res-footer {
+        /* Authentic Zomato Dish Item Card */
+        .zomato-dish-card {
+            background: #ffffff;
+            border-bottom: 1px solid var(--zomato-border);
+            padding: 20px 0;
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 700;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--border-color);
+            gap: 20px;
         }
 
-        /* Menu Dish Items (Zomato Native Style) */
-        .dish-card {
-            background: white;
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .dish-info {
+        .dish-left-col {
             flex: 1;
         }
 
-        .veg-symbol {
-            width: 15px;
-            height: 15px;
-            border: 1.5px solid var(--veg-color);
+        .icon-veg-symbol {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--zomato-green);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -374,18 +379,18 @@
             margin-bottom: 6px;
         }
 
-        .veg-symbol::after {
+        .icon-veg-symbol::after {
             content: '';
-            width: 7px;
-            height: 7px;
-            background: var(--veg-color);
+            width: 8px;
+            height: 8px;
+            background: var(--zomato-green);
             border-radius: 50%;
         }
 
-        .nonveg-symbol {
-            width: 15px;
-            height: 15px;
-            border: 1.5px solid var(--nonveg-color);
+        .icon-nonveg-symbol {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--zomato-red);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -393,108 +398,176 @@
             margin-bottom: 6px;
         }
 
-        .nonveg-symbol::after {
+        .icon-nonveg-symbol::after {
             content: '';
             width: 0;
             height: 0;
             border-left: 4px solid transparent;
             border-right: 4px solid transparent;
-            border-bottom: 7px solid var(--nonveg-color);
+            border-bottom: 8px solid var(--zomato-red);
         }
 
-        .dish-name {
-            font-size: 1.05rem;
+        .dish-title-text {
+            font-size: 1.15rem;
             font-weight: 800;
-            color: var(--text-dark);
+            color: var(--zomato-dark);
         }
 
-        .dish-price {
-            font-weight: 800;
-            font-size: 0.95rem;
+        .dish-price-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--zomato-dark);
             margin-top: 4px;
         }
 
-        .dish-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        .dish-desc-text {
+            font-size: 0.85rem;
+            color: var(--zomato-gray);
             margin-top: 6px;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
-        .dish-img-box {
+        .dish-right-col {
             position: relative;
-            width: 120px;
-            height: 110px;
+            width: 130px;
+            height: 120px;
             flex-shrink: 0;
         }
 
-        .dish-img-box img {
+        .dish-right-col img {
             width: 100%;
-            height: 90px;
+            height: 100px;
             object-fit: cover;
             border-radius: 12px;
         }
 
-        .zomato-add-btn {
+        /* Authentic Zomato ADD Button & Stepper */
+        .zomato-add-button {
             position: absolute;
-            bottom: 6px;
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
-            color: var(--primary);
-            border: 1px solid var(--primary);
+            color: var(--zomato-red);
+            border: 1px solid var(--zomato-red);
             font-weight: 900;
-            font-size: 0.9rem;
-            padding: 6px 22px;
+            font-size: 0.95rem;
+            padding: 6px 24px;
             border-radius: 8px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             cursor: pointer;
             text-transform: uppercase;
         }
 
-        .qty-stepper {
+        .zomato-add-button:hover {
+            background: #fdf0f1;
+        }
+
+        .zomato-stepper {
             position: absolute;
-            bottom: 6px;
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
+            background: var(--zomato-red);
+            color: #ffffff;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 4px 10px;
+            gap: 14px;
+            padding: 5px 12px;
             font-weight: 900;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
         }
 
-        .qty-stepper button {
+        .zomato-stepper button {
             background: none;
             border: none;
-            color: white;
+            color: #ffffff;
             font-weight: 900;
             font-size: 1.1rem;
             cursor: pointer;
         }
 
-        /* Cart Page Mobile */
-        .card-box {
-            background: white;
-            border-radius: var(--radius-md);
-            padding: 16px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 16px;
+        /* Floating Zomato Green Bottom Cart Bar */
+        .zomato-floating-cart {
+            position: fixed;
+            bottom: 65px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 600px;
+            background: var(--zomato-green);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1900;
+            box-shadow: 0 8px 24px rgba(36, 150, 63, 0.3);
+            cursor: pointer;
+            animation: slideUp 0.3s ease;
         }
 
-        .btn-zomato {
+        @keyframes slideUp {
+            from { transform: translate(-50%, 20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* Mobile Bottom Nav Bar */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 0;
+            border-top: 1px solid var(--zomato-border);
+            z-index: 2000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--zomato-gray);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--zomato-red);
+        }
+
+        /* Cards & Buttons */
+        .z-card-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--zomato-border);
+            margin-bottom: 20px;
+        }
+
+        .btn-zomato-red {
             width: 100%;
-            background: var(--primary);
-            color: white;
+            background: var(--zomato-red);
+            color: #ffffff;
             border: none;
             padding: 14px;
-            border-radius: var(--radius-md);
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 1rem;
+            font-size: 1.05rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -502,296 +575,300 @@
             gap: 8px;
         }
 
-        .btn-zomato:hover {
-            background: var(--primary-dark);
+        .btn-zomato-red:hover {
+            background: var(--zomato-red-dark);
         }
 
-        /* Payment Gateway Mobile Tabs */
-        .pay-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            margin-bottom: 10px;
-            cursor: pointer;
-            background: white;
-        }
-
-        .pay-option.selected {
-            border-color: var(--primary);
-            background: #fff5f6;
-        }
-
-        .form-control {
+        .form-input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--zomato-border);
             border-radius: 8px;
             font-size: 0.95rem;
             margin-top: 6px;
             outline: none;
         }
 
-        .form-control:focus {
-            border-color: var(--primary);
+        .form-input:focus {
+            border-color: var(--zomato-red);
         }
 
-        @media (min-width: 769px) {
-            .restaurant-list {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .pay-tab-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid var(--zomato-border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: #ffffff;
+        }
+
+        .pay-tab-row.selected {
+            border-color: var(--zomato-red);
+            background: #fff5f6;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar-container { display: none; }
+            .header-actions { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Top Mobile Search & Header -->
-    <header class="top-header">
-        <div class="location-row">
-            <div class="location-info">
-                <i class="fa-solid fa-location-dot"></i>
-                <div>
-                    <div>Home <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i></div>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Plot 45, Jubilee Hills, Hyderabad</span>
+    <!-- Authentic Zomato Header -->
+    <header class="zomato-header">
+        <div class="header-container">
+            <a onclick="showView('home')" class="zomato-brand">zomato</a>
+
+            <div class="search-bar-container">
+                <div class="location-select">
+                    <i class="fa-solid fa-location-dot"></i> Hyderabad ▾
+                </div>
+                <div class="search-input-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="desktop-search-input" placeholder="Search for restaurant, cuisine or a dish..." onkeyup="filterRestaurants()">
                 </div>
             </div>
-            <div onclick="showPage('admin')" style="background: #fff0f3; color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer;">
-                <i class="fa-solid fa-user-shield"></i>
+
+            <div class="header-actions">
+                <a onclick="showView('cart')" class="action-link"><i class="fa-solid fa-bag-shopping" style="color: var(--zomato-red);"></i> Cart (<span id="cart-counter-num">0</span>)</a>
+                <a onclick="showView('admin')" class="action-link"><i class="fa-solid fa-user-shield"></i> Admin</a>
             </div>
-        </div>
-        <div class="search-box-wrapper">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="mobile-search-input" class="search-input" placeholder="Search biryani, pizza, burger, sushi..." onkeyup="handleSearch()">
         </div>
     </header>
 
-    <!-- Floating Zomato Bottom Cart Bar -->
-    <div class="floating-cart-bar" id="floating-cart-bar" onclick="showPage('cart')">
-        <div class="floating-cart-info" id="floating-cart-text">1 ITEM | ₹340</div>
-        <div class="floating-cart-btn">View Cart <i class="fa-solid fa-caret-right"></i></div>
+    <!-- Zomato Nav Tabs Strip -->
+    <div class="zomato-tabs-strip">
+        <div class="tabs-container">
+            <div class="tab-btn active" id="tab-delivery" onclick="showView('home')">
+                <div class="tab-icon-circle"><i class="fa-solid fa-motorcycle"></i></div>
+                <span>Delivery</span>
+            </div>
+            <div class="tab-btn" id="tab-dining" onclick="showView('restaurants')">
+                <div class="tab-icon-circle"><i class="fa-solid fa-utensils"></i></div>
+                <span>Dining Out</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zomato Floating Green Bottom Cart Bar -->
+    <div class="zomato-floating-cart" id="zomato-floating-cart" onclick="showView('cart')">
+        <div style="font-weight: 800; font-size: 1rem;" id="floating-cart-title">1 ITEM | ₹340</div>
+        <div style="font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+            View Cart <i class="fa-solid fa-caret-right"></i>
+        </div>
     </div>
 
     <!-- Mobile Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="showPage('home')">
+    <div class="mobile-bottom-nav">
+        <div class="mobile-nav-item active" id="mnav-home" onclick="showView('home')">
             <i class="fa-solid fa-motorcycle"></i>
             <span>Delivery</span>
         </div>
-        <div class="nav-item" id="nav-restaurants" onclick="showPage('restaurants')">
+        <div class="mobile-nav-item" id="mnav-restaurants" onclick="showView('restaurants')">
             <i class="fa-solid fa-utensils"></i>
             <span>Dining</span>
         </div>
-        <div class="nav-item" id="nav-cart" onclick="showPage('cart')">
+        <div class="mobile-nav-item" id="mnav-cart" onclick="showView('cart')">
             <i class="fa-solid fa-bag-shopping"></i>
             <span>Cart</span>
-            <div class="nav-cart-badge" id="nav-cart-count" style="display: none;">0</div>
         </div>
-        <div class="nav-item" id="nav-admin" onclick="showPage('admin')">
+        <div class="mobile-nav-item" id="mnav-admin" onclick="showView('admin')">
             <i class="fa-solid fa-user-shield"></i>
             <span>Admin</span>
         </div>
-    </nav>
+    </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- 1. HOME DELIVERY VIEW -->
-        <div id="page-home" class="view-page active-page">
-            <!-- Round Category Scroll Bar -->
-            <div class="category-avatar-row">
-                <div class="category-item active" onclick="filterCuisine('ALL', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=150" alt="All"></div>
-                    <div class="category-label">All Dishes</div>
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <!-- 1. HOME VIEW (Delivery) -->
+        <div id="view-home" class="page-view active">
+            <div class="inspiration-title">Inspiration for your first order</div>
+            
+            <div class="category-scroll-row">
+                <div class="category-card-circle" onclick="filterCuisine('ALL')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200" alt="All"></div>
+                    <div class="category-name-text">All Dishes</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('Hyderabadi', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=150" alt="Biryani"></div>
-                    <div class="category-label">Biryani</div>
+                <div class="category-card-circle" onclick="filterCuisine('Hyderabadi')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200" alt="Biryani"></div>
+                    <div class="category-name-text">Biryani</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('Italian', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" alt="Pizza"></div>
-                    <div class="category-label">Pizza</div>
+                <div class="category-card-circle" onclick="filterCuisine('Italian')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200" alt="Pizza"></div>
+                    <div class="category-name-text">Pizza</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('American', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=150" alt="Burger"></div>
-                    <div class="category-label">Burgers</div>
+                <div class="category-card-circle" onclick="filterCuisine('American')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" alt="Burger"></div>
+                    <div class="category-name-text">Burger</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('Chinese', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=150" alt="Chinese"></div>
-                    <div class="category-label">Chinese</div>
+                <div class="category-card-circle" onclick="filterCuisine('Chinese')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=200" alt="Noodles"></div>
+                    <div class="category-name-text">Noodles</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('North Indian', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=150" alt="North Indian"></div>
-                    <div class="category-label">Thali</div>
+                <div class="category-card-circle" onclick="filterCuisine('North Indian')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200" alt="Thali"></div>
+                    <div class="category-name-text">North Indian</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('Mexican', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=150" alt="Mexican"></div>
-                    <div class="category-label">Tacos</div>
+                <div class="category-card-circle" onclick="filterCuisine('Bakery')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=200" alt="Cake"></div>
+                    <div class="category-name-text">Cake</div>
                 </div>
-                <div class="category-item" onclick="filterCuisine('Japanese', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=150" alt="Japanese"></div>
-                    <div class="category-label">Sushi</div>
-                </div>
-                <div class="category-item" onclick="filterCuisine('Bakery', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=150" alt="Bakery"></div>
-                    <div class="category-label">Desserts</div>
-                </div>
-                <div class="category-item" onclick="filterCuisine('South Indian', this)">
-                    <div class="category-circle"><img src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=150" alt="South Indian"></div>
-                    <div class="category-label">Dosa</div>
+                <div class="category-card-circle" onclick="filterCuisine('South Indian')">
+                    <div class="circle-img-wrapper"><img src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=200" alt="Dosa"></div>
+                    <div class="category-name-text">Dosa</div>
                 </div>
             </div>
 
-            <h3 style="font-size: 1.1rem; font-weight: 800; margin: 16px 0 12px;">Top Restaurants Nearby</h3>
-            <div class="restaurant-list" id="home-res-list"></div>
+            <div class="inspiration-title" style="margin-top: 24px;">Delivery Restaurants in Hyderabad</div>
+            <div class="res-grid" id="home-res-grid"></div>
         </div>
 
         <!-- 2. RESTAURANTS VIEW -->
-        <div id="page-restaurants" class="view-page">
-            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 14px;">All Restaurants</h3>
-            <div class="restaurant-list" id="all-res-list"></div>
+        <div id="view-restaurants" class="page-view">
+            <div class="inspiration-title">All Partner Restaurants</div>
+            <div class="res-grid" id="all-res-grid"></div>
         </div>
 
         <!-- 3. MENU VIEW -->
-        <div id="page-menu" class="view-page">
-            <div id="menu-res-header" class="card-box" style="margin-bottom: 16px; border: none; background: #ffffff; box-shadow: var(--shadow-sm);"></div>
-            <div style="background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);" id="menu-dishes-list"></div>
+        <div id="view-menu" class="page-view">
+            <div id="menu-header-box" class="z-card-box" style="margin-bottom: 20px;"></div>
+            <div class="inspiration-title">Recommended Dishes</div>
+            <div id="dishes-list-box" class="z-card-box" style="padding: 0 16px;"></div>
         </div>
 
         <!-- 4. CART VIEW -->
-        <div id="page-cart" class="view-page">
-            <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 14px;">Your Cart</h3>
-            <div id="cart-content-box"></div>
+        <div id="view-cart" class="page-view">
+            <div class="inspiration-title">Your Food Cart</div>
+            <div id="cart-container-box"></div>
         </div>
 
         <!-- 5. CHECKOUT ADDRESS REVIEW VIEW -->
-        <div id="page-checkout" class="view-page">
-            <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 14px;">Step 1: Delivery Details</h3>
-            <div class="card-box">
-                <div class="form-group">
-                    <label style="font-size: 0.85rem; font-weight: 700;">Deliver To</label>
-                    <input type="text" id="cust-name" class="form-control" value="Rohith Kumar">
+        <div id="view-checkout" class="page-view">
+            <div class="inspiration-title">Step 1: Delivery Address</div>
+            <div class="z-card-box">
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: 700; font-size: 0.85rem;">Customer Name</label>
+                    <input type="text" id="cust-name" class="form-input" value="Rohith Kumar">
                 </div>
-                <div class="form-group">
-                    <label style="font-size: 0.85rem; font-weight: 700;">Mobile Number</label>
-                    <input type="tel" id="cust-phone" class="form-control" value="9876543210">
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: 700; font-size: 0.85rem;">Mobile Phone</label>
+                    <input type="tel" id="cust-phone" class="form-input" value="9876543210">
                 </div>
-                <div class="form-group">
-                    <label style="font-size: 0.85rem; font-weight: 700;">Full Address</label>
-                    <textarea id="cust-address" class="form-control" rows="3">Plot 45, Jubilee Hills, Hyderabad</textarea>
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: 700; font-size: 0.85rem;">Delivery Address</label>
+                    <textarea id="cust-address" class="form-input" rows="3">Plot 45, Jubilee Hills, Hyderabad</textarea>
                 </div>
             </div>
 
-            <div class="card-box" id="checkout-bill-box"></div>
-            <button class="btn-zomato" onclick="showPage('payment-gateway')">PROCEED TO PAYMENT GATEWAY &rarr;</button>
+            <div class="z-card-box" id="checkout-summary-box"></div>
+            <button class="btn-zomato-red" onclick="showView('payment-gateway')">PROCEED TO PAYMENT GATEWAY &rarr;</button>
         </div>
 
         <!-- 6. PAYMENT GATEWAY VIEW -->
-        <div id="page-payment-gateway" class="view-page">
-            <div class="card-box" style="background: linear-gradient(135deg, #1c1c1c, #2d2d2d); color: white; margin-bottom: 16px;">
+        <div id="view-payment-gateway" class="page-view">
+            <div class="z-card-box" style="background: linear-gradient(135deg, #1c1c1c, #2d2d2d); color: white; margin-bottom: 20px;">
                 <div style="font-size: 0.75rem; color: #a0aec0; font-weight: 700; text-transform: uppercase;">FastGo Payment Gateway</div>
-                <h2 style="font-size: 1.4rem; font-weight: 900; margin-top: 4px;">Select Payment Option</h2>
-                <div style="font-size: 1.4rem; font-weight: 900; color: #48bb78; margin-top: 6px;" id="gateway-payable-amount">₹0.00</div>
+                <h2 style="font-size: 1.5rem; font-weight: 900; margin-top: 4px;">Select Payment Option</h2>
+                <div style="font-size: 1.6rem; font-weight: 900; color: #48bb78; margin-top: 6px;" id="payable-grand-total">₹0.00</div>
             </div>
 
-            <!-- Payment Options Sheet -->
-            <div id="payment-options-list">
-                <!-- PhonePe -->
-                <div class="pay-option selected" onclick="selectPayOption('PhonePe', this)">
+            <!-- Payment Methods List -->
+            <div id="payment-methods-list">
+                <div class="pay-tab-row selected" onclick="selectPaymentMethod('PhonePe', this)">
                     <div style="width: 32px; height: 32px; background: #5f259f; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem;">Pe</div>
                     <div style="flex: 1;">
                         <div style="font-weight: 800; color: #5f259f;">PhonePe UPI</div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Pay via PhonePe App / QR</span>
+                        <span style="font-size: 0.75rem; color: var(--zomato-gray);">Pay via PhonePe App / QR Scan</span>
                     </div>
                 </div>
 
-                <!-- Paytm -->
-                <div class="pay-option" onclick="selectPayOption('Paytm', this)">
+                <div class="pay-tab-row" onclick="selectPaymentMethod('Paytm', this)">
                     <div style="width: 32px; height: 32px; background: #00baf2; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75rem;">Paytm</div>
                     <div style="flex: 1;">
                         <div style="font-weight: 800; color: #002e6e;">Paytm Wallet & UPI</div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Paytm Wallet / Postpaid</span>
+                        <span style="font-size: 0.75rem; color: var(--zomato-gray);">Paytm Wallet / Postpaid</span>
                     </div>
                 </div>
 
-                <!-- Google Pay -->
-                <div class="pay-option" onclick="selectPayOption('Google Pay', this)">
+                <div class="pay-tab-row" onclick="selectPaymentMethod('Google Pay', this)">
                     <div style="width: 32px; height: 32px; background: #4285f4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem;">G</div>
                     <div style="flex: 1;">
                         <div style="font-weight: 800; color: #1a73e8;">Google Pay (GPay)</div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Direct GPay Transfer</span>
+                        <span style="font-size: 0.75rem; color: var(--zomato-gray);">Direct GPay Transfer</span>
                     </div>
                 </div>
 
-                <!-- Card -->
-                <div class="pay-option" onclick="selectPayOption('Card', this)">
-                    <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-credit-card"></i></div>
+                <div class="pay-tab-row" onclick="selectPaymentMethod('Card', this)">
+                    <div style="width: 32px; height: 32px; background: var(--zomato-red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-credit-card"></i></div>
                     <div style="flex: 1;">
                         <div style="font-weight: 800;">Credit / Debit Card</div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Visa, Mastercard, RuPay</span>
+                        <span style="font-size: 0.75rem; color: var(--zomato-gray);">Visa, Mastercard, RuPay</span>
                     </div>
                 </div>
 
-                <!-- Cash on Delivery -->
-                <div class="pay-option" onclick="selectPayOption('COD', this)">
-                    <div style="width: 32px; height: 32px; background: var(--veg-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div class="pay-tab-row" onclick="selectPaymentMethod('COD', this)">
+                    <div style="width: 32px; height: 32px; background: var(--zomato-green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;"><i class="fa-solid fa-money-bill-wave"></i></div>
                     <div style="flex: 1;">
                         <div style="font-weight: 800;">Cash on Delivery</div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Pay cash to delivery rider</span>
+                        <span style="font-size: 0.75rem; color: var(--zomato-gray);">Pay cash to delivery rider</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Dynamic Selected Pay Form -->
-            <div class="card-box" id="pay-dynamic-form" style="margin-top: 16px;"></div>
+            <!-- Dynamic Form Area -->
+            <div class="z-card-box" id="pay-dynamic-form" style="margin-top: 16px;"></div>
         </div>
 
-        <!-- 7. ORDER SUCCESS / LIVE TRACKING VIEW -->
-        <div id="page-order-success" class="view-page">
-            <div class="card-box" style="text-align: center; padding: 30px 16px;">
-                <div style="width: 70px; height: 70px; background: #f0fdf4; color: var(--veg-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 16px;">
+        <!-- 7. ORDER SUCCESS / TRACKING VIEW -->
+        <div id="view-order-success" class="page-view">
+            <div class="z-card-box" style="text-align: center; padding: 40px 20px;">
+                <div style="width: 80px; height: 80px; background: #f0fdf4; color: var(--zomato-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 20px;">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <h2 style="font-size: 1.5rem; font-weight: 900; color: var(--veg-color);">Order Confirmed!</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Restaurant is preparing your delicious meal.</p>
-                <div id="success-receipt" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 20px; font-size: 0.9rem;"></div>
-                <button class="btn-zomato" onclick="showPage('home')">BACK TO HOME</button>
+                <h2 style="font-size: 1.6rem; font-weight: 900; color: var(--zomato-green);">Order Confirmed!</h2>
+                <p style="color: var(--zomato-gray); margin-bottom: 20px;">Kitchen has received your order and is preparing it.</p>
+                <div id="order-receipt-box" style="background: #f8fafc; border: 1px solid var(--zomato-border); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 24px;"></div>
+                <button class="btn-zomato-red" onclick="showView('home')">BACK TO HOME</button>
             </div>
         </div>
 
         <!-- 8. ADMIN DASHBOARD VIEW -->
-        <div id="page-admin" class="view-page">
-            <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 14px;">Admin Dashboard</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                <div class="card-box" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL ORDERS</div>
-                    <div style="font-size: 1.8rem; font-weight: 900; color: var(--primary);" id="admin-orders-count">1</div>
+        <div id="view-admin" class="page-view">
+            <div class="inspiration-title">Zomato Admin Dashboard</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                <div class="z-card-box" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--zomato-gray); font-weight: 700;">TOTAL ORDERS</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--zomato-red);" id="admin-orders-count">1</div>
                 </div>
-                <div class="card-box" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">REVENUE</div>
-                    <div style="font-size: 1.8rem; font-weight: 900; color: var(--veg-color);" id="admin-revenue-amount">₹450</div>
+                <div class="z-card-box" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--zomato-gray); font-weight: 700;">TOTAL REVENUE</div>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--zomato-green);" id="admin-revenue-val">₹450</div>
                 </div>
             </div>
-            <div class="card-box">
-                <h4 style="margin-bottom: 12px;">Order History</h4>
-                <div id="admin-orders-list"></div>
+
+            <div class="z-card-box">
+                <h4 style="margin-bottom: 14px; font-weight: 800;">Order Analytics</h4>
+                <div id="admin-orders-table"></div>
             </div>
         </div>
     </div>
 
-    <!-- Application Script -->
+    <!-- Script Engine -->
     <script>
         const restaurants = [
-            { id: 1, name: "Paradise Biryani", cuisine: "Hyderabadi, Biryani", rating: "4.8", priceForTwo: 500, time: "30 mins", promo: "50% OFF up to ₹100", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500" },
-            { id: 2, name: "Pizza Hut & Bistro", cuisine: "Italian, Pizza, Pasta", rating: "4.5", priceForTwo: 600, time: "25 mins", promo: "Flat ₹120 OFF", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" },
-            { id: 3, name: "Burger King & Grill", cuisine: "American, Fast Food", rating: "4.6", priceForTwo: 400, time: "20 mins", promo: "Free Fries Offer", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" },
-            { id: 4, name: "Mainland China", cuisine: "Chinese, Asian", rating: "4.7", priceForTwo: 700, time: "35 mins", promo: "20% OFF Special", image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500" },
-            { id: 5, name: "Dhaba 1947", cuisine: "North Indian, Thali", rating: "4.4", priceForTwo: 450, time: "25 mins", promo: "Free Butter Naan", image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500" },
-            { id: 6, name: "Taco Bell & Mexican", cuisine: "Mexican, Tacos", rating: "4.3", priceForTwo: 500, time: "20 mins", promo: "Buy 1 Get 1 Taco", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
-            { id: 7, name: "Miyako Sushi Bar", cuisine: "Japanese, Sushi", rating: "4.9", priceForTwo: 900, time: "40 mins", promo: "Chef Gourmet Special", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500" },
-            { id: 8, name: "The Belgian Waffle", cuisine: "Bakery, Desserts", rating: "4.7", priceForTwo: 350, time: "15 mins", promo: "Waffle Combo Offer", image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=500" },
-            { id: 9, name: "Green Bowl Healthy", cuisine: "Healthy, Salad, Vegan", rating: "4.6", priceForTwo: 400, time: "20 mins", promo: "15% OFF Healthy Fit", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" },
-            { id: 10, name: "Chutneys South Indian", cuisine: "South Indian, Dosa", rating: "4.8", priceForTwo: 300, time: "15 mins", promo: "Unlimited Chutney Special", image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500" }
+            { id: 1, name: "Paradise Biryani", cuisine: "Hyderabadi, Biryani, Mughlai", rating: "4.8", priceForTwo: 500, time: "30 min", promo: "50% OFF up to ₹100", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500" },
+            { id: 2, name: "Pizza Hut & Bistro", cuisine: "Italian, Pizza, Pasta", rating: "4.5", priceForTwo: 600, time: "25 min", promo: "Flat ₹120 OFF", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" },
+            { id: 3, name: "Burger King & Grill", cuisine: "American, Burger, Fast Food", rating: "4.6", priceForTwo: 400, time: "20 min", promo: "Free Fries Offer", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" },
+            { id: 4, name: "Mainland China", cuisine: "Chinese, Asian, Dimsum", rating: "4.7", priceForTwo: 700, time: "35 min", promo: "20% OFF Special", image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=500" },
+            { id: 5, name: "Dhaba 1947", cuisine: "North Indian, Thali, Naan", rating: "4.4", priceForTwo: 450, time: "25 min", promo: "Free Butter Naan", image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500" },
+            { id: 6, name: "Taco Bell & Mexican", cuisine: "Mexican, Tacos, Burritos", rating: "4.3", priceForTwo: 500, time: "20 min", promo: "Buy 1 Get 1 Taco", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500" },
+            { id: 7, name: "Miyako Sushi Bar", cuisine: "Japanese, Sushi, Ramen", rating: "4.9", priceForTwo: 900, time: "40 min", promo: "Chef Gourmet Special", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500" },
+            { id: 8, name: "The Belgian Waffle", cuisine: "Bakery, Desserts, Waffles", rating: "4.7", priceForTwo: 350, time: "15 min", promo: "Waffle Combo Offer", image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=500" },
+            { id: 9, name: "Green Bowl Healthy", cuisine: "Healthy, Salad, Vegan", rating: "4.6", priceForTwo: 400, time: "20 min", promo: "15% OFF Fit Meal", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" },
+            { id: 10, name: "Chutneys South Indian", cuisine: "South Indian, Dosa, Idli", rating: "4.8", priceForTwo: 300, time: "15 min", promo: "Unlimited Chutney", image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500" }
         ];
 
         const menuItems = {
@@ -809,160 +886,164 @@
 
         for (let i = 3; i <= 10; i++) {
             menuItems[i] = [
-                { id: i * 100 + 1, name: `${restaurants[i-1].name} Chef Special`, price: 320, veg: false, desc: "Signature house specialty prepared fresh.", image: restaurants[i-1].image },
-                { id: i * 100 + 2, name: `${restaurants[i-1].name} Veg Supreme`, price: 270, veg: true, desc: "Fresh vegetarian meal with signature spices.", image: restaurants[i-1].image }
+                { id: i * 100 + 1, name: `${restaurants[i-1].name} Special`, price: 320, veg: false, desc: "Signature house dish prepared fresh.", image: restaurants[i-1].image },
+                { id: i * 100 + 2, name: `${restaurants[i-1].name} Veg Platter`, price: 270, veg: true, desc: "Fresh vegetarian meal with signature spices.", image: restaurants[i-1].image }
             ];
         }
 
-        let cart = []; // [{id, restName, name, price, qty}]
-        let currentRest = restaurants[0];
-        let selectedPayApp = 'PhonePe';
+        let cart = [];
+        let currentRestaurant = restaurants[0];
+        let selectedPaymentApp = 'PhonePe';
         let orderHistory = [
             { id: 1001, restName: "Paradise Biryani", amount: 680, method: "PhonePe", status: "Delivered" }
         ];
 
         window.onload = function() {
-            renderRestaurantList(restaurants, 'home-res-list');
-            renderRestaurantList(restaurants, 'all-res-list');
-            updateCartFloatingBar();
+            renderResGrid(restaurants, 'home-res-grid');
+            renderResGrid(restaurants, 'all-res-grid');
+            updateCartBar();
         };
 
-        function showPage(pageId) {
-            document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        function showView(viewId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.mobile-nav-item').forEach(m => m.classList.remove('active'));
 
-            const target = document.getElementById(`page-${pageId}`);
-            if (target) target.classList.add('active-page');
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.add('active');
 
-            const navBtn = document.getElementById(`nav-${pageId}`);
-            if (navBtn) navBtn.classList.add('active');
+            if (viewId === 'home') {
+                document.getElementById('tab-delivery').classList.add('active');
+                document.getElementById('mnav-home').classList.add('active');
+            } else if (viewId === 'restaurants') {
+                document.getElementById('tab-dining').classList.add('active');
+                document.getElementById('mnav-restaurants').classList.add('active');
+            } else if (viewId === 'cart') {
+                document.getElementById('mnav-cart').classList.add('active');
+                renderCartView();
+            } else if (viewId === 'admin') {
+                document.getElementById('mnav-admin').classList.add('active');
+                renderAdminView();
+            } else if (viewId === 'checkout') renderCheckoutView();
+            else if (viewId === 'payment-gateway') renderGatewayView();
 
-            if (pageId === 'cart') renderCartPage();
-            if (pageId === 'checkout') renderCheckoutPage();
-            if (pageId === 'payment-gateway') renderGatewayPage();
-            if (pageId === 'admin') renderAdminPage();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function renderRestaurantList(list, elementId) {
+        function renderResGrid(list, elementId) {
             const container = document.getElementById(elementId);
             container.innerHTML = list.map(r => `
-                <div class="res-card" onclick="openMenu(${r.id})">
-                    <div class="res-img-box">
+                <div class="zomato-res-card" onclick="openMenu(${r.id})">
+                    <div class="card-img-container">
                         <img src="${r.image}" alt="${r.name}">
-                        <div class="res-promo-tag">${r.promo}</div>
-                        <div class="res-rating-tag">${r.rating} <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i></div>
+                        <div class="badge-discount">${r.promo}</div>
+                        <div class="badge-time">${r.time}</div>
                     </div>
-                    <div class="res-details">
-                        <div class="res-name">${r.name}</div>
-                        <div class="res-cuisine">${r.cuisine}</div>
-                        <div class="res-footer">
-                            <span><i class="fa-solid fa-clock"></i> ${r.time}</span>
-                            <span>₹${r.priceForTwo} for two</span>
-                        </div>
+                    <div class="res-info-row">
+                        <div class="res-title-text">${r.name}</div>
+                        <div class="rating-green-pill">${r.rating} <i class="fa-solid fa-star" style="font-size: 0.65rem;"></i></div>
+                    </div>
+                    <div class="res-subtitle-row">
+                        <span>${r.cuisine}</span>
+                        <span>₹${r.priceForTwo} for two</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function handleSearch() {
-            const q = document.getElementById('mobile-search-input').value.toLowerCase();
-            const filtered = restaurants.filter(r => r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q));
-            renderRestaurantList(filtered, 'home-res-list');
+        function filterRestaurants() {
+            const query = (document.getElementById('desktop-search-input').value || '').toLowerCase();
+            const filtered = restaurants.filter(r => r.name.toLowerCase().includes(query) || r.cuisine.toLowerCase().includes(query));
+            renderResGrid(filtered, 'home-res-grid');
         }
 
-        function filterCuisine(cuisine, el) {
-            document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            if (cuisine === 'ALL') renderRestaurantList(restaurants, 'home-res-list');
+        function filterCuisine(cuisine) {
+            if (cuisine === 'ALL') renderResGrid(restaurants, 'home-res-grid');
             else {
                 const filtered = restaurants.filter(r => r.cuisine.toLowerCase().includes(cuisine.toLowerCase()));
-                renderRestaurantList(filtered, 'home-res-list');
+                renderResGrid(filtered, 'home-res-grid');
             }
         }
 
         function openMenu(restId) {
-            currentRest = restaurants.find(r => r.id === restId);
-            document.getElementById('menu-res-header').innerHTML = `
-                <h2 style="font-size: 1.4rem; font-weight: 900;">${currentRest.name}</h2>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">${currentRest.cuisine}</div>
-                <div style="font-size: 0.8rem; font-weight: 700; color: var(--rating-green); margin-top: 6px;">⭐ ${currentRest.rating} | 🚴 ${currentRest.time} delivery time</div>
+            currentRestaurant = restaurants.find(r => r.id === restId);
+            document.getElementById('menu-header-box').innerHTML = `
+                <h1 style="font-size: 1.8rem; font-weight: 900; color: var(--zomato-dark);">${currentRestaurant.name}</h1>
+                <div style="font-size: 0.9rem; color: var(--zomato-gray); margin-top: 2px;">${currentRestaurant.cuisine}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--zomato-green); margin-top: 8px;">⭐ ${currentRestaurant.rating} Rating | 🚴 ${currentRestaurant.time} delivery time</div>
             `;
 
             const dishes = menuItems[restId] || menuItems[1];
-            document.getElementById('menu-dishes-list').innerHTML = dishes.map(d => {
+            document.getElementById('dishes-list-box').innerHTML = dishes.map(d => {
                 const cartItem = cart.find(c => c.id === d.id);
                 const qty = cartItem ? cartItem.qty : 0;
                 return `
-                    <div class="dish-card">
-                        <div class="dish-info">
-                            <span class="${d.veg ? 'veg-symbol' : 'nonveg-symbol'}"></span>
-                            <div class="dish-name">${d.name}</div>
-                            <div class="dish-price">₹${d.price}</div>
-                            <div class="dish-desc">${d.desc}</div>
+                    <div class="zomato-dish-card">
+                        <div class="dish-left-col">
+                            <span class="${d.veg ? 'icon-veg-symbol' : 'icon-nonveg-symbol'}"></span>
+                            <div class="dish-title-text">${d.name}</div>
+                            <div class="dish-price-text">₹${d.price}</div>
+                            <div class="dish-desc-text">${d.desc}</div>
                         </div>
-                        <div class="dish-img-box">
+                        <div class="dish-right-col">
                             <img src="${d.image}" alt="${d.name}">
                             ${qty > 0 ? `
-                                <div class="qty-stepper">
-                                    <button onclick="changeQty(${d.id}, -1)">-</button>
+                                <div class="zomato-stepper">
+                                    <button onclick="changeDishQty(${d.id}, -1)">-</button>
                                     <span>${qty}</span>
-                                    <button onclick="changeQty(${d.id}, 1)">+</button>
+                                    <button onclick="changeDishQty(${d.id}, 1)">+</button>
                                 </div>
                             ` : `
-                                <button class="zomato-add-btn" onclick="addToCart(${d.id}, '${d.name}', ${d.price})">ADD</button>
+                                <button class="zomato-add-button" onclick="addToCart(${d.id}, '${d.name}', ${d.price})">ADD</button>
                             `}
                         </div>
                     </div>
                 `;
             }).join('');
 
-            showPage('menu');
+            showView('menu');
         }
 
         function addToCart(itemId, name, price) {
-            cart.push({ id: itemId, restName: currentRest.name, name, price, qty: 1 });
-            updateCartFloatingBar();
-            openMenu(currentRest.id); // Refresh menu UI with quantity steppers
+            cart.push({ id: itemId, restName: currentRestaurant.name, name, price, qty: 1 });
+            updateCartBar();
+            openMenu(currentRestaurant.id);
         }
 
-        function changeQty(itemId, delta) {
+        function changeDishQty(itemId, delta) {
             const idx = cart.findIndex(c => c.id === itemId);
             if (idx !== -1) {
                 cart[idx].qty += delta;
                 if (cart[idx].qty <= 0) cart.splice(idx, 1);
             }
-            updateCartFloatingBar();
-            openMenu(currentRest.id);
+            updateCartBar();
+            openMenu(currentRestaurant.id);
         }
 
-        function updateCartFloatingBar() {
-            const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
-            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+        function updateCartBar() {
+            const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            const totalAmt = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
-            const bar = document.getElementById('floating-cart-bar');
-            const badge = document.getElementById('nav-cart-count');
+            const cartBar = document.getElementById('zomato-floating-cart');
+            document.getElementById('cart-counter-num').innerText = totalQty;
 
-            if (totalItems > 0) {
-                bar.style.display = 'flex';
-                document.getElementById('floating-cart-text').innerText = `${totalItems} ITEM${totalItems > 1 ? 'S' : ''} | ₹${totalAmount}`;
-                badge.style.display = 'flex';
-                badge.innerText = totalItems;
+            if (totalQty > 0) {
+                cartBar.style.display = 'flex';
+                document.getElementById('floating-cart-title').innerText = `${totalQty} ITEM${totalQty > 1 ? 'S' : ''} | ₹${totalAmt}`;
             } else {
-                bar.style.display = 'none';
-                badge.style.display = 'none';
+                cartBar.style.display = 'none';
             }
         }
 
-        function renderCartPage() {
-            const box = document.getElementById('cart-content-box');
+        function renderCartView() {
+            const box = document.getElementById('cart-container-box');
             if (cart.length === 0) {
                 box.innerHTML = `
-                    <div style="text-align: center; padding: 40px 16px;">
-                        <i class="fa-solid fa-basket-shopping" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 12px;"></i>
+                    <div class="z-card-box" style="text-align: center; padding: 40px;">
+                        <i class="fa-solid fa-basket-shopping" style="font-size: 3rem; color: var(--zomato-gray); margin-bottom: 12px;"></i>
                         <h3>Your Cart is Empty</h3>
-                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Good food is always waiting for you!</p>
-                        <button class="btn-zomato" style="margin-top: 20px;" onclick="showPage('home')">Browse Restaurants</button>
+                        <p style="color: var(--zomato-gray); margin-top: 4px;">Explore restaurants and add your favorite meals!</p>
+                        <button class="btn-zomato-red" style="width: auto; margin: 16px auto 0;" onclick="showView('home')">Browse Restaurants</button>
                     </div>
                 `;
                 return;
@@ -974,57 +1055,57 @@
             const grandTotal = subtotal + gst + delivery;
 
             box.innerHTML = `
-                <div class="card-box">
-                    <h4 style="margin-bottom: 12px; font-weight: 800;">Items from ${cart[0].restName}</h4>
+                <div class="z-card-box">
+                    <h4 style="margin-bottom: 14px; font-size: 1.1rem; font-weight: 800;">Items from ${cart[0].restName}</h4>
                     ${cart.map(i => `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--zomato-border);">
                             <div>
-                                <div style="font-weight: 800; font-size: 0.95rem;">${i.name}</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">₹${i.price}</div>
+                                <div style="font-weight: 800;">${i.name}</div>
+                                <div style="font-size: 0.85rem; color: var(--zomato-gray);">₹${i.price} x ${i.qty}</div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <button onclick="changeQty(${i.id}, -1)" style="width: 26px; height: 26px; border: 1px solid #ccc; background: white; border-radius: 4px; font-weight: 900;">-</button>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <button onclick="changeDishQty(${i.id}, -1)" style="width: 28px; height: 28px; border: 1px solid var(--zomato-border); background: #ffffff; border-radius: 4px; font-weight: 900;">-</button>
                                 <span style="font-weight: 800;">${i.qty}</span>
-                                <button onclick="changeQty(${i.id}, 1)" style="width: 26px; height: 26px; border: 1px solid #ccc; background: white; border-radius: 4px; font-weight: 900;">+</button>
-                                <span style="font-weight: 800; min-width: 50px; text-align: right;">₹${i.price * i.qty}</span>
+                                <button onclick="changeDishQty(${i.id}, 1)" style="width: 28px; height: 28px; border: 1px solid var(--zomato-border); background: #ffffff; border-radius: 4px; font-weight: 900;">+</button>
+                                <span style="font-weight: 800; min-width: 60px; text-align: right;">₹${i.price * i.qty}</span>
                             </div>
                         </div>
                     `).join('')}
                 </div>
 
-                <div class="card-box">
-                    <h4 style="margin-bottom: 10px; font-weight: 800;">Bill Details</h4>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;"><span>Item Total</span><span>₹${subtotal.toFixed(2)}</span></div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;"><span>GST Tax (5%)</span><span>₹${gst.toFixed(2)}</span></div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;"><span>Delivery Fee</span><span>₹${delivery.toFixed(2)}</span></div>
-                    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 900; border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 8px;">
-                        <span>To Pay</span><span style="color: var(--primary);">₹${grandTotal.toFixed(2)}</span>
+                <div class="z-card-box">
+                    <h4 style="margin-bottom: 12px; font-size: 1.1rem; font-weight: 800;">Grand Total</h4>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Item Subtotal</span><span>₹${subtotal.toFixed(2)}</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>GST (5%)</span><span>₹${gst.toFixed(2)}</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Delivery Fee</span><span>₹${delivery.toFixed(2)}</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 900; border-top: 1px dashed var(--zomato-border); padding-top: 10px; margin-top: 10px;">
+                        <span>To Pay</span><span style="color: var(--zomato-red);">₹${grandTotal.toFixed(2)}</span>
                     </div>
                 </div>
 
-                <button class="btn-zomato" onclick="showPage('checkout')">PROCEED TO ADDRESS REVIEW &rarr;</button>
+                <button class="btn-zomato-red" onclick="showView('checkout')">PROCEED TO ADDRESS REVIEW &rarr;</button>
             `;
         }
 
-        function renderCheckoutPage() {
+        function renderCheckoutView() {
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 : 0;
-            document.getElementById('checkout-bill-box').innerHTML = `
-                <div style="font-weight: 800; font-size: 1rem;">Total Payable: <span style="color: var(--primary);">₹${grandTotal.toFixed(2)}</span></div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Standard 30-minute hot delivery</div>
+            document.getElementById('checkout-summary-box').innerHTML = `
+                <div style="font-weight: 800; font-size: 1.1rem;">Total Amount Payable: <span style="color: var(--zomato-red);">₹${grandTotal.toFixed(2)}</span></div>
+                <div style="font-size: 0.85rem; color: var(--zomato-gray); margin-top: 4px;">Delivering in 30 minutes</div>
             `;
         }
 
-        function renderGatewayPage() {
+        function renderGatewayView() {
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 : 450;
-            document.getElementById('gateway-payable-amount').innerText = `₹${grandTotal.toFixed(2)}`;
-            selectPayOption('PhonePe', document.querySelector('.pay-option'));
+            document.getElementById('payable-grand-total').innerText = `₹${grandTotal.toFixed(2)}`;
+            selectPaymentMethod('PhonePe', document.querySelector('.pay-tab-row'));
         }
 
-        function selectPayOption(method, el) {
-            selectedPayApp = method;
-            document.querySelectorAll('.pay-option').forEach(p => p.classList.remove('selected'));
+        function selectPaymentMethod(method, el) {
+            selectedPaymentApp = method;
+            document.querySelectorAll('.pay-tab-row').forEach(r => r.classList.remove('selected'));
             if (el) el.classList.add('selected');
 
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
@@ -1034,36 +1115,36 @@
             if (method === 'PhonePe' || method === 'Paytm' || method === 'Google Pay') {
                 const colors = { PhonePe: '#5f259f', Paytm: '#00baf2', 'Google Pay': '#4285f4' };
                 formBox.innerHTML = `
-                    <h4 style="color: ${colors[method]}; margin-bottom: 10px;">${method} Payment</h4>
-                    <div style="text-align: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; margin-bottom: 12px;">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=fastgo@upi&pn=FastGo&am=${grandTotal.toFixed(2)}" style="width: 120px; height: 120px; border: 2px solid ${colors[method]}; border-radius: 8px;">
-                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Scan with ${method} app to pay ₹${grandTotal.toFixed(2)}</p>
+                    <h4 style="color: ${colors[method]}; margin-bottom: 12px;">${method} Payment</h4>
+                    <div style="text-align: center; background: #f8fafc; border: 1px solid var(--zomato-border); padding: 16px; border-radius: 12px; margin-bottom: 14px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=fastgo@upi&pn=FastGo&am=${grandTotal.toFixed(2)}" style="width: 130px; height: 130px; border: 2px solid ${colors[method]}; border-radius: 8px;">
+                        <p style="font-size: 0.8rem; color: var(--zomato-gray); margin-top: 8px;">Scan QR with ${method} app to pay ₹${grandTotal.toFixed(2)}</p>
                     </div>
-                    <button class="btn-zomato" style="background: ${colors[method]};" onclick="submitOrder('${method}')">PAY ₹${grandTotal.toFixed(0)} WITH ${method.toUpperCase()}</button>
+                    <button class="btn-zomato-red" style="background: ${colors[method]};" onclick="completeOrder('${method}')">PAY ₹${grandTotal.toFixed(0)} WITH ${method.toUpperCase()}</button>
                 `;
             } else if (method === 'Card') {
                 formBox.innerHTML = `
-                    <h4 style="margin-bottom: 10px;">Credit / Debit Card</h4>
-                    <input type="text" class="form-control" value="Rohith Kumar" placeholder="Cardholder Name">
-                    <input type="text" class="form-control" placeholder="4532 XXXX XXXX 8910">
+                    <h4 style="margin-bottom: 12px;">Credit / Debit Card</h4>
+                    <input type="text" class="form-input" value="Rohith Kumar" placeholder="Cardholder Name">
+                    <input type="text" class="form-input" placeholder="4532 XXXX XXXX 8910">
                     <div style="display: flex; gap: 8px;">
-                        <input type="text" class="form-control" placeholder="MM/YY">
-                        <input type="password" class="form-control" placeholder="CVV" maxlength="4">
+                        <input type="text" class="form-input" placeholder="MM/YY">
+                        <input type="password" class="form-input" placeholder="CVV" maxlength="4">
                     </div>
-                    <button class="btn-zomato" style="margin-top: 10px;" onclick="submitOrder('Card')">PAY ₹${grandTotal.toFixed(0)} SECURELY</button>
+                    <button class="btn-zomato-red" style="margin-top: 14px;" onclick="completeOrder('Card')">PAY ₹${grandTotal.toFixed(0)} SECURELY</button>
                 `;
             } else {
                 formBox.innerHTML = `
-                    <div style="text-align: center; padding: 10px;">
-                        <h4 style="margin-bottom: 6px;">Cash on Delivery</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">Pay cash or scan rider's QR upon arrival.</p>
-                        <button class="btn-zomato" style="background: var(--veg-color);" onclick="submitOrder('COD')">CONFIRM COD ORDER</button>
+                    <div style="text-align: center; padding: 12px;">
+                        <h4 style="margin-bottom: 8px;">Cash on Delivery</h4>
+                        <p style="font-size: 0.85rem; color: var(--zomato-gray); margin-bottom: 16px;">Pay cash or scan rider QR code upon delivery.</p>
+                        <button class="btn-zomato-red" style="background: var(--zomato-green);" onclick="completeOrder('COD')">CONFIRM CASH ON DELIVERY</button>
                     </div>
                 `;
             }
         }
 
-        function submitOrder(method) {
+        function completeOrder(method) {
             const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const grandTotal = subtotal > 0 ? subtotal + (subtotal * 0.05) + 35 : 450;
             const newOrder = {
@@ -1075,28 +1156,28 @@
             };
             orderHistory.unshift(newOrder);
 
-            document.getElementById('success-receipt').innerHTML = `
-                <div style="font-weight: 800; font-size: 1rem; margin-bottom: 4px;">Order #${newOrder.id} - ${newOrder.restName}</div>
-                <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 4px;">🚴 Delivery: 30 minutes</div>
-                <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 8px;">💳 Payment: <strong>${method}</strong></div>
-                <div style="font-weight: 900; font-size: 1.1rem; color: var(--primary);">Total Paid: ₹${grandTotal.toFixed(2)}</div>
+            document.getElementById('order-receipt-box').innerHTML = `
+                <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">Order #${newOrder.id} - ${newOrder.restName}</div>
+                <div style="color: var(--zomato-gray); font-size: 0.85rem; margin-bottom: 4px;">🚴 Delivery: 30 minutes</div>
+                <div style="color: var(--zomato-gray); font-size: 0.85rem; margin-bottom: 10px;">💳 Payment Method: <strong>${method}</strong></div>
+                <div style="font-weight: 900; font-size: 1.1rem; color: var(--zomato-red);">Total Paid: ₹${grandTotal.toFixed(2)}</div>
             `;
 
             cart = [];
-            updateCartFloatingBar();
-            showPage('order-success');
+            updateCartBar();
+            showView('order-success');
         }
 
-        function renderAdminPage() {
+        function renderAdminView() {
             document.getElementById('admin-orders-count').innerText = orderHistory.length;
             const totalRev = orderHistory.reduce((sum, o) => sum + o.amount, 0);
-            document.getElementById('admin-revenue-amount').innerText = `₹${totalRev.toFixed(0)}`;
+            document.getElementById('admin-revenue-val').innerText = `₹${totalRev.toFixed(0)}`;
 
-            document.getElementById('admin-orders-list').innerHTML = orderHistory.map(o => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
+            document.getElementById('admin-orders-table').innerHTML = orderHistory.map(o => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--zomato-border); font-size: 0.85rem;">
                     <div>
                         <div style="font-weight: 800;">Order #${o.id} - ${o.restName}</div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem;">Payment: ${o.method}</div>
+                        <div style="color: var(--zomato-gray); font-size: 0.75rem;">Payment: ${o.method}</div>
                     </div>
                     <div style="text-align: right;">
                         <div style="font-weight: 800;">₹${o.amount.toFixed(2)}</div>

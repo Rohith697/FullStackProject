@@ -5,6 +5,9 @@
 
 <%
     List<Restaurant> restaurants = (List<Restaurant>) request.getAttribute("restaurants");
+    if (restaurants == null) {
+        restaurants = new com.rohith.fastgo.dao.RestaurantDAO().getAllActiveRestaurants();
+    }
     String searchQuery = (String) request.getAttribute("searchQuery");
     String selectedCuisine = (String) request.getAttribute("selectedCuisine");
 %>

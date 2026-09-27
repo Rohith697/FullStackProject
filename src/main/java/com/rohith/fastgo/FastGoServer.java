@@ -47,8 +47,19 @@ public class FastGoServer {
                 additionWebInfClasses.getAbsolutePath(), "/"));
         ctx.setResources(resources);
 
+        // Alias context paths (/FastGo and /FastGoo) to avoid 404
+        for (String cPath : new String[]{"/FastGo", "/FastGoo"}) {
+            StandardContext ctxAlias = (StandardContext) tomcat.addWebapp(cPath, new File(webappDirLocation).getAbsolutePath());
+            ctxAlias.setParentClassLoader(FastGoServer.class.getClassLoader());
+            WebResourceRoot resAlias = new StandardRoot(ctxAlias);
+            resAlias.addPreResources(new DirResourceSet(resAlias, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
+            ctxAlias.setResources(resAlias);
+        }
+
         System.out.println("FastGo Food Delivery application starting at:");
         System.out.println("👉 http://localhost:" + port);
+        System.out.println("👉 http://localhost:" + port + "/FastGo");
+        System.out.println("👉 http://localhost:" + port + "/FastGoo");
         System.out.println("=========================================================");
 
         tomcat.start();
